@@ -33,8 +33,8 @@ router.get('/search',(req,res,next)=>{
 
 })
 
-router.get('/song',(req,res,next)=>{
-	const song_id = req.query.id
+router.get('/song/:id',(req,res,next)=>{
+	const song_id = req.params.id
 	const baseUrl = `http://api.joox.com/web-fcgi-bin/web_get_songinfo?songid=${song_id}&lang=id&country=id&from_type=null&channel_id=null`
     Axios.request({
      url: baseUrl,
