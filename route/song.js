@@ -1,6 +1,5 @@
 const router = require('express').Router()
 const cheerio = require('cheerio')
-const on404 = require('./handleError').on404
 const { default: Axios } = require('axios')
 
 router.use(function timeLog (req, res, next) {
