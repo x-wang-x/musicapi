@@ -3,8 +3,34 @@ const cheerio = require('cheerio')
 const on404 = require('./handleError').on404
 const { default: Axios } = require('axios')
 
-router.get('/id', (req, res,next) => {
-   res.send('nothing')
+router.use(function timeLog (req, res, next) {
+  console.log('Time: ', Date.now())
+  next()
+})
+
+router.get('/', function (req, res){
+    res.send('Hey yo !! This is MusicAPI page')
+})
+
+router.get('/album', (req, res,next) => {
+   const id = req.query.id
+   const baseUrl = `http://api.joox.com/web-fcgi-bin/web_get_albuminfo?lang=id&country=id&albumid=${id}&from_type=null&channel_id=null`
+   Axios.request({
+     url: baseUrl,
+     method: "get",
+     headers:{
+         Cookie: "wmid=142420656; user_type=1; country=id; session_key=2a5d97d05dc8fe238150184eaf3519ad;"
+     }}).then((response)=>{
+
+     	let data=response.data
+
+		console.log(baseUrl)
+		console.log(data)
+	    res.send(data)
+
+     }).catch(error =>{
+        res.send(error)
+    })
 })
 
 router.get('/singer', (req, res,next) => {
@@ -23,7 +49,8 @@ router.get('/singer', (req, res,next) => {
 		data=data.replace('xk3n(','')
 		data=data.replace(')','')
 
-		res.setHeader('Content-Type', 'application/json');
+		res.setHeader('Content-Type', 'application/json')
+
 	    res.end(data)
 
      }).catch(error =>{
